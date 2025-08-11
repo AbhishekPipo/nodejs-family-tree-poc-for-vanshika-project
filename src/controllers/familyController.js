@@ -70,7 +70,14 @@ exports.getFamilyTree = async (req, res) => {
         }
 
         const directRelations = await DirectRelation.findAll({
-            where: { personId: loggedInUserId }
+            where: { personId: loggedInUserId },
+            include: [
+                { 
+                    model: Person,
+                    as: 'relatedTo',
+                    attributes: ['name']
+                }
+            ]
         });
 
         const indirectRelations = await IndirectRelation.findAll({
@@ -105,7 +112,17 @@ exports.getFamilyTree = async (req, res) => {
                 }
             },
             include: [
-                { model: DirectRelation, as: 'directRelations' },
+                { 
+                    model: DirectRelation, 
+                    as: 'directRelations',
+                    include: [
+                        {
+                            model: Person,
+                            as: 'relatedTo',
+                            attributes: ['name']
+                        }
+                    ]
+                },
                 { model: IndirectRelation, as: 'indirectRelations' },
             ]
         });
