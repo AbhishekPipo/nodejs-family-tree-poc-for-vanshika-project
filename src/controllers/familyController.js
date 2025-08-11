@@ -6,6 +6,7 @@ const { Op } = require('sequelize');
 const getRelationshipLabel = (loggedInUser, person, allPeople) => {
     if (loggedInUser.id === person.id) return 'self';
 
+    
     const directRelation = loggedInUser.directRelations.find(r => r.relatedToId === person.id);
     if (directRelation) {
         return directRelation.relation;
